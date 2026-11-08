@@ -1,29 +1,22 @@
 # SoroGuard
 
-> A defensive security learning toolkit.
+A defensive security learning toolkit.
 
-A set of safe, defensive utilities for reviewing security headers, checking password strength locally, and learning secure configuration practices. It will not perform exploitation or unauthorized scanning.
+## Features
+- Local password-hygiene guidance
+- Security-header reference checklist
+- Remediation explanations
+- No network requests or credential storage
 
-## Technology
+## Run
+Open `index.html` in a modern browser. Use a sample password, not a password you currently use.
 
-Python for local checks; optional HTML documentation.
+## Scope
+This is an educational checklist, not a penetration-testing tool, remote scanner or cryptographic audit.
 
-## Roadmap
-
-- [ ] Security checklist
-- [ ] Password-strength guidance (local only)
-- [ ] HTTP security-header review for authorized targets
-- [ ] Clear remediation notes
-- [ ] Unit tests
-
-## Project status
-
-Early development. Features are added incrementally and documented as they become available.
-
-## Contributing
-
-Issues and focused pull requests are welcome. Please describe the problem, expected behavior, and steps to reproduce bugs.
+## Structure
+- `index.html` — checklist and local evaluation logic
+- `README.md` — project documentation
 
 ## License
-
-No license has been selected yet. Until a license is added, all rights are reserved by the copyright holder.
+No license selected. All rights reserved until a license is added.
