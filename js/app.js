@@ -1,4 +1,29 @@
 "use strict";
-(()=>{const nodes='section,.panel,.stat,.tasks,.file,.window,.person,.hero,canvas'.split(',').flatMap(s=>[...document.querySelectorAll(s)]);const unique=[...new Set(nodes)].filter(n=>!n.closest('.side'));if(!('IntersectionObserver'in window)){unique.forEach(n=>n.classList.add('visible'));return}const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.08});unique.forEach(n=>{n.classList.add('reveal');io.observe(n)});})();
-
-const checks=[['Content-Security-Policy','Restricts which sources can load scripts, styles and other resources.'],['Strict-Transport-Security','Tells browsers to use HTTPS for future visits.'],['X-Content-Type-Options','Set to nosniff to reduce MIME-type confusion.'],['Referrer-Policy','Limits referrer information shared with other sites.'],['Permissions-Policy','Controls access to browser features such as camera and microphone.']];$('#checks').innerHTML=checks.map(([n,d])=>'<article class="check"><b>'+n+'</b><p>'+d+'</p></article>').join('');$('#pw').oninput=()=>{let p=$('#pw').value,s=0;if(p.length>=12)s++;if(p.length>=16)s++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;$('#meter').style.width=(s*20)+'%';$('#score').textContent=p?(s<=2?'Needs improvement':s<=3?'Fair':s===4?'Good':'Strong pattern'):'Not evaluated';$('#advice').textContent=p.length<12?'Try a longer, unique passphrase (16+ characters is a useful target).':s<4?'Consider adding variety and avoid predictable words or reused patterns.':'Good pattern. Use a unique password and enable multi-factor authentication.'};
+const $ = selector => document.querySelector(selector);
+const checks = [
+ ["Content-Security-Policy","Restricts which sources can load scripts, styles and other resources."],
+ ["Strict-Transport-Security","Encourages browsers to use HTTPS for future visits."],
+ ["X-Content-Type-Options","Use nosniff to reduce MIME-type confusion."],
+ ["Referrer-Policy","Limits referrer information shared with other sites."],
+ ["Permissions-Policy","Controls access to browser features such as camera and microphone."]
+];
+const host=$("#checks");
+checks.forEach(([name,description])=>{
+ const article=document.createElement("article");article.className="check";
+ const title=document.createElement("b");title.textContent=name;
+ const text=document.createElement("p");text.textContent=description;
+ article.append(title,text);host.append(article);
+});
+const input=$("#pw");
+function evaluate(password){
+ const checks=[password.length>=12,password.length>=16,/[a-z]/.test(password)&&/[A-Z]/.test(password),/[0-9]/.test(password),/[^A-Za-z0-9]/.test(password)];
+ return checks.filter(Boolean).length;
+}
+input.addEventListener("input",()=>{
+ const password=input.value;
+ const score=evaluate(password);
+ $("#meter").style.width=(score*20)+"%";
+ $("#score").textContent=!password?"Not evaluated":score<=2?"Needs improvement":score===3?"Fair":score===4?"Good":"Strong pattern";
+ $("#advice").textContent=!password?"Use a unique passphrase and a password manager. Never reuse important passwords.":password.length<12?"Try a longer, unique passphrase. A longer password is generally harder to guess.":score<4?"Avoid predictable patterns and never reuse passwords across important accounts.":"Good pattern. Use a unique password and enable multi-factor authentication.";
+});
+$("#pw").addEventListener("blur",()=>{input.value="";$("#meter").style.width="0%";$("#score").textContent="Not evaluated";});
